@@ -126,7 +126,7 @@ class MakingOf(models.Model):
                                             null=True, blank=True, related_name='making_of')
 
     def __str__(self):
-        return f"[{self.get_entidade_relacionada_display()}] {self.titulo}"
+        return f"{self.titulo}"
 
 
 class Conquista(models.Model):
