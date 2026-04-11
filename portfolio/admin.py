@@ -58,17 +58,17 @@ class FormacaoAdmin(admin.ModelAdmin):
 
 
 class MakingOfAdmin(admin.ModelAdmin):
-    list_display = ("titulo", "entidade_relacionada", "data")
-    ordering = ("-data",)
+    list_display = ("titulo", "entidade_relacionada")
+    ordering = ("titulo",)
     search_fields = ("titulo",)
+
 
 
 class ConquistaAdmin(admin.ModelAdmin):
-    list_display = ("titulo", "tipo", "data")
-    ordering = ("-data",)
+    list_display = ("titulo", "tipo")
+    ordering = ("titulo",)
     search_fields = ("titulo",)
-
-
+    
 admin.site.register(Docente, DocenteAdmin)
 admin.site.register(Licenciatura, LicenciaturaAdmin)
 admin.site.register(UnidadeCurricular, UnidadeCurricularAdmin)
