@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Projetos</h2>
+{% for p in projetos %}
+    <article>
+        {% if p.imagem %}<img src="{{ p.imagem.url }}" alt="{{ p.titulo }}">{% endif %}
+        <h3>{{ p.titulo }}</h3>
+        <p>{{ p.descricao }}</p>
+        <small>Tecnologias: 
+            {% for t in p.tecnologias.all %}{{ t.nome }}{% if not forloop.last %}, {% endif %}{% empty %}Nenhuma{% endfor %}
+        </small>
+    </article>
+{% empty %}
+    <p>Sem registos.</p>
+{% endfor %}
+{% endblock %}
