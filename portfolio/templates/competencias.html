@@ -9,8 +9,11 @@
         <small>Tecnologias: 
             {% for t in c.tecnologias.all %}{{ t.nome }}{% if not forloop.last %}, {% endif %}{% empty %}Nenhuma{% endfor %}
         </small>
+        <a href="{% url 'competencia_editar' c.pk %}">Editar</a>
+        <a href="{% url 'competencia_apagar' c.pk %}">Apagar</a>
     </article>
 {% empty %}
     <p>Sem competências registadas.</p>
 {% endfor %}
+    <a href="{% url 'competencia_criar' %}">+ Nova Competência</a>
 {% endblock %}

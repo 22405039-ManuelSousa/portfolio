@@ -6,8 +6,11 @@
         {% if t.logo %}<img src="{{ t.logo.url }}" width="50">{% endif %}
         <h3>{{ t.nome }} ({{ t.get_categoria_display }})</h3>
         <p>Nível: {{ t.nivel }}/10</p>
+        <a href="{% url 'tecnologia_editar' t.pk %}">Editar</a>
+        <a href="{% url 'tecnologia_apagar' t.pk %}">Apagar</a>
     </article>
 {% empty %}
     <p>Sem tecnologias.</p>
 {% endfor %}
+    <a href="{% url 'tecnologia_criar' %}">+ Nova Tecnologia</a>
 {% endblock %}
