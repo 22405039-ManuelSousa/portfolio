@@ -28,4 +28,6 @@ urlpatterns = [
     path('formacoes/criar/', views.formacao_criar, name='formacao_criar'),
     path('formacoes/<int:pk>/editar/', views.formacao_editar, name='formacao_editar'),
     path('formacoes/<int:pk>/apagar/', views.formacao_apagar, name='formacao_apagar'),
+
+    path('sobre/', views.sobre_view, name='sobre'),
 ]

@@ -157,3 +157,8 @@ def formacao_apagar(request, pk):
         formacao.delete()
         return redirect('formacoes')
     return render(request, 'formacao_confirmar_apagar.html', {'formacao': formacao})
+
+def sobre_view(request):
+    return render(request, 'sobre.html')
+
+    
