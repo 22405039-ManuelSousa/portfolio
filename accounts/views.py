@@ -25,7 +25,7 @@ def logout_view(request):
     return redirect('projetos')
 
 def registo_view(request):
-    form = RegistoForm(request.POST or None)
+    form = RegistoForm(request.POST)
     if form.is_valid():
         form.save()
         return redirect('login')
