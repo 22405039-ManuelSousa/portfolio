@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from .forms import ProjetoForm, TecnologiaForm, CompetenciaForm, FormacaoForm
 from .models import (Docente, Licenciatura, UnidadeCurricular, Tecnologia,
                      Projeto, TFC, Competencia, Formacao, MakingOf, Conquista)
@@ -20,11 +21,13 @@ def unidades_curriculares_view(request):
 
 def tecnologias_view(request):
     tecnologias = Tecnologia.objects.all()
-    return render(request, 'tecnologias.html', {'tecnologias': tecnologias})
+    gestor = request.user.groups.filter(name='gestor-portfolio').exists()
+    return render(request, 'tecnologias.html', {'tecnologias': tecnologias, 'gestor': gestor})
 
 def projetos_view(request):
     projetos = Projeto.objects.select_related('unidade_curricular').prefetch_related('tecnologias').all()
-    return render(request, 'projetos.html', {'projetos': projetos})
+    gestor = request.user.groups.filter(name='gestor-portfolio').exists()
+    return render(request, 'projetos.html', {'projetos': projetos, 'gestor': gestor})
 
 def tfcs_view(request):
     tfcs = TFC.objects.select_related('licenciatura').prefetch_related('tecnologias').all()
@@ -32,11 +35,13 @@ def tfcs_view(request):
 
 def competencias_view(request):
     competencias = Competencia.objects.prefetch_related('tecnologias', 'projetos').all()
-    return render(request, 'competencias.html', {'competencias': competencias})
+    gestor = request.user.groups.filter(name='gestor-portfolio').exists()
+    return render(request, 'competencias.html', {'competencias': competencias, 'gestor': gestor})
 
 def formacoes_view(request):
     formacoes = Formacao.objects.prefetch_related('tecnologias', 'competencias').all()
-    return render(request, 'formacoes.html', {'formacoes': formacoes})
+    gestor = request.user.groups.filter(name='gestor-portfolio').exists()
+    return render(request, 'formacoes.html', {'formacoes': formacoes, 'gestor': gestor})
 
 def makingof_view(request):
     makingof = MakingOf.objects.select_related('projeto', 'tecnologia', 'unidade_curricular').all()
@@ -46,6 +51,7 @@ def conquistas_view(request):
     conquistas = Conquista.objects.prefetch_related('projetos', 'tecnologias').all()
     return render(request, 'conquistas.html', {'conquistas': conquistas})
 
+@login_required
 def projeto_criar(request): 
     if request.method == 'POST':
         form = ProjetoForm(request.POST, request.FILES)
@@ -56,6 +62,7 @@ def projeto_criar(request):
         form = ProjetoForm()
     return render(request, 'projeto_form.html', {'form': form})
 
+@login_required
 def projeto_editar(request, pk):
     projeto = Projeto.objects.get(pk=pk)  
     if request.method == 'POST':
@@ -67,6 +74,7 @@ def projeto_editar(request, pk):
         form = ProjetoForm(instance=projeto)
     return render(request, 'projeto_form.html', {'form': form})
 
+@login_required
 def projeto_apagar(request, pk):
     projeto = Projeto.objects.get(pk=pk)
     if request.method == 'POST':
@@ -74,6 +82,7 @@ def projeto_apagar(request, pk):
         return redirect('projetos')
     return render(request, 'projeto_confirmar_apagar.html', {'projeto': projeto})        
 
+@login_required
 def tecnologia_criar(request):
     if request.method == 'POST':
         form = TecnologiaForm(request.POST, request.FILES)
@@ -84,6 +93,7 @@ def tecnologia_criar(request):
         form = TecnologiaForm()
     return render(request, 'tecnologia_form.html', {'form': form})
 
+@login_required
 def tecnologia_editar(request, pk):
     tecnologia = Tecnologia.objects.get(pk=pk)
     if request.method == 'POST':
@@ -95,6 +105,7 @@ def tecnologia_editar(request, pk):
         form = TecnologiaForm(instance=tecnologia)
     return render(request, 'tecnologia_form.html', {'form': form})
 
+@login_required
 def tecnologia_apagar(request, pk):
     tecnologia = Tecnologia.objects.get(pk=pk)
     if request.method == 'POST':
@@ -102,6 +113,7 @@ def tecnologia_apagar(request, pk):
         return redirect('tecnologias')
     return render(request, 'tecnologia_confirmar_apagar.html', {'tecnologia': tecnologia})
 
+@login_required
 def competencia_criar(request):
     if request.method == 'POST':
         form = CompetenciaForm(request.POST)
@@ -112,6 +124,7 @@ def competencia_criar(request):
         form = CompetenciaForm()
     return render(request, 'competencia_form.html', {'form': form})
 
+@login_required
 def competencia_editar(request, pk):
     competencia = Competencia.objects.get(pk=pk)
     if request.method == 'POST':
@@ -123,6 +136,7 @@ def competencia_editar(request, pk):
         form = CompetenciaForm(instance=competencia)
     return render(request, 'competencia_form.html', {'form': form})
 
+@login_required
 def competencia_apagar(request, pk):
     competencia = Competencia.objects.get(pk=pk)
     if request.method == 'POST':
@@ -130,6 +144,7 @@ def competencia_apagar(request, pk):
         return redirect('competencias')
     return render(request, 'competencia_confirmar_apagar.html', {'competencia': competencia})
 
+@login_required
 def formacao_criar(request):
     if request.method == 'POST':
         form = FormacaoForm(request.POST)
@@ -140,6 +155,7 @@ def formacao_criar(request):
         form = FormacaoForm()
     return render(request, 'formacao_form.html', {'form': form})
 
+@login_required
 def formacao_editar(request, pk):
     formacao = Formacao.objects.get(pk=pk)
     if request.method == 'POST':
@@ -151,6 +167,7 @@ def formacao_editar(request, pk):
         form = FormacaoForm(instance=formacao)
     return render(request, 'formacao_form.html', {'form': form})
 
+@login_required
 def formacao_apagar(request, pk):
     formacao = Formacao.objects.get(pk=pk)
     if request.method == 'POST':
@@ -161,4 +178,3 @@ def formacao_apagar(request, pk):
 def sobre_view(request):
     return render(request, 'sobre.html')
 
-    

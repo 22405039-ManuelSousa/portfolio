@@ -9,11 +9,15 @@
         <small>Tecnologias: 
             {% for t in p.tecnologias.all %}{{ t.nome }}{% if not forloop.last %}, {% endif %}{% empty %}Nenhuma{% endfor %}
         </small>
-        <a href="{% url 'projeto_editar' p.pk %}">Editar</a>
-        <a href="{% url 'projeto_apagar' p.pk %}">Apagar</a>
+        {% if gestor %}
+            <a href="{% url 'projeto_editar' p.pk %}">Editar</a>
+            <a href="{% url 'projeto_apagar' p.pk %}">Apagar</a>
+        {% endif %}
     </article>
 {% empty %}
     <p>Sem registos.</p>
 {% endfor %}
+{% if gestor %}
     <a href="{% url 'projeto_criar' %}">+ Novo Projeto</a>
+{% endif %}
 {% endblock %}

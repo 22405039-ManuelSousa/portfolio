@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "portfolio",
     "escola",
     "markdownify.apps.MarkdownifyConfig",
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -101,7 +102,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
@@ -129,3 +129,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # URL pública para aceder aos ficheiros
 MEDIA_URL = '/media/'
+
+LOGIN_URL = 'login'
